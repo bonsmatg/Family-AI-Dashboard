@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  reasoner:
+    build:
+      context: .  # Path to the Dockerfile for this service
+      dockerfile: Dockerfile
+    ports:
+      - "7001:7001"
+    environment:
+      LEDGER_URL: "http://ledger-proxy:8546"
+      VISUAL_URL: "http://visual-listener:7002"
+    depends_on:
+      - ledger-proxy
+      - visual-listener
+
+  ledger-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile-ledger
+    ports:
+      - "8546:8546"
+
+  visual-listener:
+    build:
+      context: .
+      dockerfile: Dockerfile-python
+    ports:
+      - "7002:7002"
